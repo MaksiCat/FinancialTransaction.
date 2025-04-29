@@ -1,14 +1,16 @@
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.Scanner;
-
+// Importing necessary libraries
+import java.math.BigDecimal;// For precise financial calculations
+import java.util.List;// For using List interface
+import java.util.Scanner;// For user input
+// Main class containing the application's entry point
 public class Main {
     public static void main(String[] args) {
-        TransactionLedger ledger = new TransactionLedger();
-        Scanner scanner = new Scanner(System.in);
-        boolean running = true;
-
+        TransactionLedger ledger = new TransactionLedger();// Create a ledger to store transactions
+        Scanner scanner = new Scanner(System.in);// Create a scanner for reading user input
+        boolean running = true;// Flag to control the main loop
+// Main application loop
         while (running) {
+            // Display the main menu
             System.out.println("\n==== Financial Ledger ====");
             System.out.println("D) Add Deposit");
             System.out.println("P) Make Payment");
@@ -16,51 +18,52 @@ public class Main {
             System.out.println("X) Exit");
             System.out.print("Choose an option: ");
 
-            String choice = scanner.nextLine().toUpperCase();
-
+            String choice = scanner.nextLine().toUpperCase();// Read user input and convert to uppercase
+// Handle user choice
             switch (choice) {
-                case "D":
+                case "D":// Add Deposit
                     System.out.print("Enter description: ");
-                    String depDesc = scanner.nextLine();
+                    String depDesc = scanner.nextLine();// Read description
                     System.out.print("Enter vendor: ");
-                    String depVendor = scanner.nextLine();
+                    String depVendor = scanner.nextLine();// Read vendor
                     System.out.print("Enter amount: ");
-                    BigDecimal depAmount = new BigDecimal(scanner.nextLine());
-                    ledger.addDeposit(depDesc, depVendor, depAmount);
+                    BigDecimal depAmount = new BigDecimal(scanner.nextLine());// Read and convert amount
+                    ledger.addDeposit(depDesc, depVendor, depAmount);// Add deposit to ledger
                     System.out.println("Deposit added.");
                     break;
 
-                case "P":
+                case "P":// Make Payment
                     System.out.print("Enter description: ");
-                    String payDesc = scanner.nextLine();
+                    String payDesc = scanner.nextLine();// Read description
                     System.out.print("Enter vendor: ");
-                    String payVendor = scanner.nextLine();
+                    String payVendor = scanner.nextLine();// Read vendor
                     System.out.print("Enter amount: ");
-                    BigDecimal payAmount = new BigDecimal(scanner.nextLine());
-                    ledger.addPayment(payDesc, payVendor, payAmount);
+                    BigDecimal payAmount = new BigDecimal(scanner.nextLine());// Read and convert amount
+                    ledger.addPayment(payDesc, payVendor, payAmount);// Add payment to ledger
                     System.out.println("Payment added.");
                     break;
 
-                case "L":
-                    showLedgerMenu(ledger, scanner);
+                case "L":// Open Ledger Menu
+                    showLedgerMenu(ledger, scanner);// Call method to display ledger submenu
                     break;
 
-                case "X":
-                    running = false;
+                case "X":// Exit application
+                    running = false;// Set running to false to end loop
                     break;
 
-                default:
+                default:// Invalid input handling
                     System.out.println("Invalid choice. Try again.");
             }
         }
-
+// Display exit message
         System.out.println("Application closed.");
     }
-
+    // Method to display the ledger submenu
     private static void showLedgerMenu(TransactionLedger ledger, Scanner scanner) {
-        boolean back = false;
-
+        boolean back = false;// Flag to return to the main menu
+// Ledger submenu loop
         while (!back) {
+            // Display ledger menu options
             System.out.println("\n==== Ledger ====");
             System.out.println("A) All Entries");
             System.out.println("D) Deposits");
@@ -68,29 +71,31 @@ public class Main {
             System.out.println("H) Home");
             System.out.print("Choose an option: ");
 
-            String choice = scanner.nextLine().toUpperCase();
-
+            String choice = scanner.nextLine().toUpperCase();// Read user choice
+// Handle user input for ledger menu
             switch (choice) {
                 case "A":
-                    printTransactions(ledger.getAllTransactions());
+                    printTransactions(ledger.getAllTransactions());// Show all transactions
                     break;
                 case "D":
-                    printTransactions(ledger.getDeposits());
+                    printTransactions(ledger.getDeposits());// Show only deposits
                     break;
                 case "P":
-                    printTransactions(ledger.getPayments());
+                    printTransactions(ledger.getPayments());// Show only payments
                     break;
                 case "H":
-                    back = true;
+                    back = true;// Return to main menu
                     break;
                 default:
-                    System.out.println("Invalid choice. Try again.");
+                    System.out.println("Invalid choice. Try again.");// Handle invalid input
             }
         }
     }
+    // Method to print a list of transactions
     private static void printTransactions(List<Transaction> transactions) {
     for (Transaction t : transactions) {
-    System.out.printf("%s %s %s %s %.2f/n", t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount());
+        // Print transaction details in formatted output
+    System.out.printf("%s %s %s %s %.2f\n", t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount());
     }
     }
 }

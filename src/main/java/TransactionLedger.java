@@ -41,4 +41,43 @@ public class TransactionLedger {
     public List<Transaction> getPayments() {
         return getAllTransactions().stream().filter(t -> t.getAmount().compareTo(BigDecimal.ZERO) < 0).collect(Collectors.toList());
     }
+    // Get transactions for current month
+    public List<Transaction> getTransactionsMonthToDate() {
+        LocalDate now = LocalDate.now();
+        return getAllTransactions().stream()
+                .filter(t -> t.getDate().getMonth() == now.getMonth() && t.getDate().getYear() == now.getYear())
+                .collect(Collectors.toList());
+    }
+
+    // Get transactions for previous month
+    public List<Transaction> getTransactionsPreviousMonth() {
+        LocalDate now = LocalDate.now();
+        LocalDate previousMonth = now.minusMonths(1);
+        return getAllTransactions().stream()
+                .filter(t -> t.getDate().getMonth() == previousMonth.getMonth() && t.getDate().getYear() == previousMonth.getYear())
+                .collect(Collectors.toList());
+    }
+
+    // Get transactions for current year
+    public List<Transaction> getTransactionsYearToDate() {
+        int currentYear = LocalDate.now().getYear();
+        return getAllTransactions().stream()
+                .filter(t -> t.getDate().getYear() == currentYear)
+                .collect(Collectors.toList());
+    }
+
+    // Get transactions for previous year
+    public List<Transaction> getTransactionsPreviousYear() {
+        int previousYear = LocalDate.now().getYear() - 1;
+        return getAllTransactions().stream()
+                .filter(t -> t.getDate().getYear() == previousYear)
+                .collect(Collectors.toList());
+    }
+
+    // Get transactions by specific vendor (case-insensitive)
+    public List<Transaction> getTransactionsByVendor(String vendor) {
+        return getAllTransactions().stream()
+                .filter(t -> t.getVendor().equalsIgnoreCase(vendor))
+                .collect(Collectors.toList());
+    }
 }

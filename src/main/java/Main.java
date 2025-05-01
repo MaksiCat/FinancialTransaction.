@@ -15,6 +15,7 @@ public class Main {
             System.out.println("D) Add Deposit");
             System.out.println("P) Make Payment");
             System.out.println("L) Ledger");
+            System.out.println("R) Reports");
             System.out.println("X) Exit");
             System.out.print("Choose an option: ");
 
@@ -24,10 +25,13 @@ public class Main {
                 case "D":// Add Deposit
                     System.out.print("Enter description: ");
                     String depDesc = scanner.nextLine();// Read description
+
                     System.out.print("Enter vendor: ");
                     String depVendor = scanner.nextLine();// Read vendor
+
                     System.out.print("Enter amount: ");
                     BigDecimal depAmount = new BigDecimal(scanner.nextLine());// Read and convert amount
+
                     ledger.addDeposit(depDesc, depVendor, depAmount);// Add deposit to ledger
                     System.out.println("Deposit added.");
                     break;
@@ -35,10 +39,13 @@ public class Main {
                 case "P":// Make Payment
                     System.out.print("Enter description: ");
                     String payDesc = scanner.nextLine();// Read description
+
                     System.out.print("Enter vendor: ");
                     String payVendor = scanner.nextLine();// Read vendor
+
                     System.out.print("Enter amount: ");
                     BigDecimal payAmount = new BigDecimal(scanner.nextLine());// Read and convert amount
+
                     ledger.addPayment(payDesc, payVendor, payAmount);// Add payment to ledger
                     System.out.println("Payment added.");
                     break;
@@ -47,6 +54,9 @@ public class Main {
                     showLedgerMenu(ledger, scanner);// Call method to display ledger submenu
                     break;
 
+                case "R":
+                    showReportsMenu(ledger, scanner);
+                    break;
                 case "X":// Exit application
                     running = false;// Set running to false to end loop
                     break;
@@ -88,6 +98,49 @@ public class Main {
                     break;
                 default:
                     System.out.println("Invalid choice. Try again.");// Handle invalid input
+            }
+        }
+    }
+
+    // Method to display the reports submenu
+    private static void showReportsMenu(TransactionLedger ledger, Scanner scanner) {
+        boolean back = false;
+
+        while (!back) {
+            System.out.println("\n==== Reports ====");
+            System.out.println("1) Month To Date");
+            System.out.println("2) Previous Month");
+            System.out.println("3) Year To Date");
+            System.out.println("4) Previous Year");
+            System.out.println("5) Search by Vendor");
+            System.out.println("0) Back");
+            System.out.print("Choose an option: ");
+
+            String choice = scanner.nextLine();
+
+            switch (choice) {
+                case "1":
+                    printTransactions(ledger.getTransactionsMonthToDate());
+                    break;
+                case "2":
+                    printTransactions(ledger.getTransactionsPreviousMonth());
+                    break;
+                case "3":
+                    printTransactions(ledger.getTransactionsYearToDate());
+                    break;
+                case "4":
+                    printTransactions(ledger.getTransactionsPreviousYear());
+                    break;
+                case "5":
+                    System.out.print("Enter vendor name: ");
+                    String vendor = scanner.nextLine();
+                    printTransactions(ledger.getTransactionsByVendor(vendor));
+                    break;
+                case "0":
+                    back = true;
+                    break;
+                default:
+                    System.out.println("Invalid choice. Try again.");
             }
         }
     }
